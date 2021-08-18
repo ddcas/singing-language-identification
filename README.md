@@ -6,22 +6,22 @@
 
 
 
-##Introduction
+## Introduction
 This repository corresponds to a MSc thesis project on Singing-language Identification (SLID).
 SLID is a research problem within Music Information Retrieval that consists in identifying the correct language of the vocals sung in an arbitrary music recording.
 
 
-##Preprocessing
+## Preprocessing
 Since language is a relatively high-level feature in musical data, the SLID problem requires large amounts of music recordings for each of the target languages. Additionally, the variety of music styles and genres makes the need for lots of datapoints critical, due to the high variance of the dataset distribution.
 
 However, even with a large dataset, the features that best characterize languages in music might be elusive, still for an expressive enough classifier. There is where preprocessing increases the data efficiency, by filtering out the useless information from each music recording and condensing the crucial features in smaller vectors.
-#####1) Vocals isolation
+##### 1) Vocals isolation
 The isolation of the vocals consists in separating the vocals from the background music in the music recording and keeping them as the main source of language information.
 It is based on the assumption that audio-linguistic features are more useful for language identification than audio-instrumental features. For example: there are many Japanese rock songs in the dataset, but there are not the only songs with background rock music.
 
 A neural-network-based [source-separation algorithm]((https://github.com/dr-costas/mad-twinnet)) was applied to all music recordings, followed by a removal of the non-vocal sections using `librosa.effects.split`.
 
-#####2) Segmentation
+##### 2) Segmentation
 Once the vocal segments are isolated, a combination of algorithms is employed to find those vocal pieces that are more likely to contain the language-characteristic features:  `librosa.feature.chroma_stft` --> [autocorrelation](https://en.wikipedia.org/wiki/Autocorrelation) --> `librosa.feature.rms` --> `librosa.feature.spectral_flatness`.
 
 
@@ -40,7 +40,7 @@ A `Makefile` is included to facilitate this process.
           `Soundfile == 0.10.2`
           `tensorflow == 1.14`
 
-##Training
+## Training
 The resulting outputs of the preprocessing should be waveforms containing vocal segments. These will serve as inputs to the classifier that will try to predict the language of the vocals contained in each segment.
 
 The classifier chosen is a [Temporal Convolutional Network](https://github.com/locuslab/TCN) (TCN), which has demonstrated to be effective across a diverse range of sequence modeling tasks.
