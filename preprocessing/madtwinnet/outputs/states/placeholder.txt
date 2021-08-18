@@ -1,0 +1,1 @@
+Here is where the pre-trained MadTwinNet weights should be
